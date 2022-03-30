@@ -1,4 +1,4 @@
-// Script by Branton Kunz, April 2022 - Geography 575, UW-Madison
+//Branton Kunz, March 30, 2022 - Geography 575, UW-Madison
 
 
 
@@ -6,15 +6,16 @@
 window.onload = function(){
 
     var w = 950, h = 500;
-    var container = d3.select("body")
+    var container = d3.select("body") //get the <body> element from the DOM
+    //add a gray background svg rectangle
         .append("svg")
         .attr("height", h)
         .attr("width", w)
         .attr("class","container")
         .style("background-color", "rgba(0,0,0,0.2)")
-         //get the <body> element from the DOM
-
-    var innerRect = container.append("rect")
+         
+    //define and add the inner white rectangle that will be the backdrop for the chart
+    var innerRect = container.append("rect") 
         .datum(400)
         .attr("height",function(d){
             return d
@@ -27,8 +28,8 @@ window.onload = function(){
         .attr("y",50)
         .style("fill","white")
 
-        // var dataValues = [10,20,30,40,50];
 
+        //population data
         var cityPop = [
             { 
                 city: 'Madison',
@@ -50,13 +51,11 @@ window.onload = function(){
 
 
 
-    //above Example 2.8 line 20
+    //defines the X axis length
     var x = d3.scaleLinear() //create the scale
         .range([90, 750]) //output min and max
         .domain([0, 3]); //input min and max
 
-
-    //above Example 2.8 line 20
     //find the minimum value of the array
     var minPop = d3.min(cityPop, function(d){
         return d.population;
@@ -67,13 +66,14 @@ window.onload = function(){
         return d.population;
     });
 
+    //creates the scale on the left side
     //scale for circles center y coordinate
     var y = d3.scaleLinear()
         .range([450, 50]) //was 440, 95
         .domain([0, 700000]); //was minPop, maxPop
 
     
-    //above Example 2.8 line 20
+    //gives D3 a starting and ending color range to relate to the data proportionally 
     //color scale generator 
     var color = d3.scaleLinear()
         .range([
@@ -86,7 +86,7 @@ window.onload = function(){
         ]);
 
 
-    //Example 2.6 line 3
+    //creates the circles that represent the data
     var circles = container.selectAll(".circles") //create an empty selection
         .data(cityPop) //here we feed in an array
         .enter() //one of the great mysteries of the universe
@@ -130,23 +130,23 @@ window.onload = function(){
         .attr("transform", "translate(50, 0)")
         .call(yAxis);
 
-            //Example 3.7 line 6...create axis g element and add axis
+        //create axis g element and add axis
         var axis = container.append("g")
         .attr("class", "axis");
 
         yAxis(axis);
 
-            //below Example 3.9...create a text element and add the title
+        //creates a text element and adds the title
         var title = container.append("text")
         .attr("class", "title")
         .attr("text-anchor", "middle")
         .attr("x", 450)
         .attr("y", 30)
-        .text("City Populations");
+        .text("Wisconsin City Populations");
 
       
 
-    //Example 3.14 line 1...create circle labels
+    //creates the circle labels
     var labels = container.selectAll(".labels")
         .data(cityPop)
         .enter()
@@ -158,7 +158,7 @@ window.onload = function(){
             return y(d.population);
         });
 
-    //first line of label
+    //creates the city labels
     var nameLine = labels.append("tspan")
         .attr("class", "nameLine")
         .attr("x", function(d,i){
@@ -174,7 +174,7 @@ window.onload = function(){
     //create format generator
     var format = d3.format(",");
 
-    //Example 3.16 line 1...second line of label
+    //Breaks the circle label text into two lines
     var popLine = labels.append("tspan")
         .attr("class", "popLine")
         .attr("x", function(d,i){
@@ -184,10 +184,6 @@ window.onload = function(){
         .text(function(d){
             return "Pop. " + format(d.population); //use format generator to format numbers
         });
-
-
-
-
 
 
 }
