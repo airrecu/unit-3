@@ -1,0 +1,21 @@
+.map {
+    border: medium solid #999;
+}
+
+
+.countries {
+    fill: rgb(189, 140, 140);
+    stroke: #CCC;
+    stroke-width: .5px;
+}
+
+
+.gratLines {
+    fill: none;
+    stroke: #199;
+    stroke-width: .5px;
+}
+
+.gratBackground {
+    fill: #D5E3FF;
+}
