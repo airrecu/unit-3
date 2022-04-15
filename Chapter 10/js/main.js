@@ -1,10 +1,8 @@
+//Geography 575, Activity 10 Branton Kunz - April 2022
 //wrap everything is immediately invoked anonymous function so nothing is in global scope
 (function (){
 
 	//pseudo-global variables
-
-    					
-
 	var attrArray = ["GDP", "NG_Gas_Consumption", "HDD", "dependency_percent", "population"]; //list of attributes
 	var expressed = attrArray[0]; //initial attribute
 
@@ -67,7 +65,7 @@
 	    };
 	};
 
-
+	//creates graticule and defines settings for it
 	function setGraticule(map,path){
 		var graticule = d3.geoGraticule()
 	            .step([5, 5]); //place graticule lines every 5 degrees of longitude and latitude
@@ -87,6 +85,7 @@
 	            .attr("d", path); //project graticule lines
 	}
 
+	//joins data based on common field SOV_A3, a country code
 	function joinData(europeCountries,csvData){
 		//loop through csv to assign each set of csv attribute values to geojson region
 	        for (var i=0; i<csvData.length; i++){
@@ -113,6 +112,7 @@
 	        return europeCountries;
 	}
 
+	//sets color scales
 	function makeColorScale(data){
 		var colorClasses = [
 	        "#D4B9DA",
@@ -140,7 +140,7 @@
 	}
 
 function setEnumerationUnits(europeCountries,map,path,colorScale){
-    //add France regions to map
+    //add European countries (as regions) to map
     var regions = map.selectAll(".regions")
         .data(europeCountries)
         .enter()
@@ -188,8 +188,8 @@ function setChart(csvData, colorScale){
 
     //create a scale to size bars proportionally to frame and for axis
     var yScale = d3.scaleLinear()
-        .range([463, 0])
-        .domain([0, 100]);
+        .range([463, 0])   
+        .domain([0, 4000000]); //was 100
 
     //set bars for each province
     var bars = chart.selectAll(".bar")
@@ -200,7 +200,7 @@ function setChart(csvData, colorScale){
             return b[expressed]-a[expressed]
         })
         .attr("class", function(d){
-            return "bar " + d.adm1_code;
+            return "bar " + d.SOV_A3;
         })
         .attr("width", chartInnerWidth / csvData.length - 1)
         .attr("x", function(d, i){
@@ -221,7 +221,8 @@ function setChart(csvData, colorScale){
         .attr("x", 40)
         .attr("y", 40)
         .attr("class", "chartTitle")
-        .text("Number of Variable " + expressed[3] + " in each region");
+        // .text("GDP (Euros) " + expressed[3] + " in each region");
+		.text("2019 Annual GDP (Millions of Euros) ");
 
     //create vertical axis generator
     var yAxis = d3.axisLeft()
@@ -239,8 +240,6 @@ function setChart(csvData, colorScale){
         .attr("width", chartInnerWidth)
         .attr("height", chartInnerHeight)
         .attr("transform", translate);
-
-
 
 };
 
