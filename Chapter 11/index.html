@@ -17,35 +17,38 @@
     </head>
 
     <body>
-         <div id="Title">
-        <center><a href="https://ec.europa.eu/eurostat">Eurostat Data</a></center>    
+        <script>
+            window.addEventListener("load", () => {
+              document.getElementById("demoBBack").style.opacity = .1;
+            });
+            </script>
+        <div id="demo">
+            <!-- <!--<div id="demoBTop"> -->
+      
+            <div id="Title">
+           
+            <div><center>Eurostat Data</center></div>    
+            </div>
+            
+  
         </div>
-
-
+        <div id="demoBBack"></div>
+        
+        <div id ="Source">
+            <a href="https://ec.europa.eu/eurostat">Source</a>    
+        </div>
 
         
 
-
-        <!--put your initial page content here-->
-
-        <!--you can also use this space for internal scripts;
-        place these within <script> tags-->
-
-        <!--put your external script links here-->
         <script src='https://unpkg.com/simple-statistics@7.0.7/dist/simple-statistics.min.js'></script>
         <!-- <script type="text/javascript" src='lib/simple_statistics.min.js'></script> -->
         <script type="text/javascript" src="lib/topojson.min.js"></script>
         <script type="text/javascript" src="lib/d3.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        <!-- <script type="text/javascript" src="js/europe_example.js"></script> -->
-      
-<!--         
-        <div id="Source">
-            <center>
+        
+        
+        
 
-                <a href="https://ec.europa.eu/eurostat">Source</a>
-            </center>    
-            </div> -->
-    
+
     </body>
 </html>

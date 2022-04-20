@@ -1,4 +1,4 @@
-//wrap everything is immediately invoked anonymous function so nothing is in clobal scope
+//everything is wrapped in an immediately invoked anonymous function to make all variables sub-global
 (function () {
     //pseudo-global variables
     var attrArray = ["GDP", "NG_Gas_Consumption", "HDD", "dependency_percent", "population"]; //list of attributes
@@ -8,7 +8,7 @@
     //chart frame dimensions
     var chartWidth = window.innerWidth * 0.425,
         chartHeight = 473,
-        leftPadding = 25,
+        leftPadding = 50,
         rightPadding = 2,
         topBottomPadding = 5,
         chartInnerWidth = chartWidth - leftPadding - rightPadding,
@@ -16,12 +16,12 @@
         translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
 
     //create a scale to size bars proportionally to frame and for axis
-    var yScale = d3.scaleLinear().range([463, 0]).domain([0, 4000000]);
+    var yScale = d3.scaleLinear().range([463, 0]).domain([0, 3473350]);
 
     //begin script when window loads
     window.onload = setMap();
 
-    //Example 1.3 line 4...set up choropleth map
+    //sets up choropleth map
     function setMap() {
         //map frame dimensions
         var width = window.innerWidth * 0.5,
@@ -29,7 +29,7 @@
 
         //create new svg container for the map
         var map = d3
-            .select("body")
+            .select("#demo")
             .append("svg")
             .attr("class", "map")
             .attr("width", width)
@@ -184,7 +184,7 @@
     function setChart(csvData, colorScale) {
         //create a second svg element to hold the bar chart
         var chart = d3
-            .select("body")
+            .select("#demo")
             .append("svg")
             .attr("width", chartWidth)
             .attr("height", chartHeight)
@@ -222,7 +222,7 @@
         //create a text element for the chart title
         var chartTitle = chart
             .append("text")
-            .attr("x", 40)
+            .attr("x", 120)
             .attr("y", 40)
             .attr("class", "chartTitle");
 
@@ -249,7 +249,7 @@
     function createDropdown(csvData) {
         //add select element
         var dropdown = d3
-            .select("body")
+            .select("#demo")
             .append("select")
             .attr("class", "dropdown")
             .on("change", function () {
@@ -272,8 +272,8 @@
             .attr("value", function (d) {
                 return d;
             })
-            .text(function (d) {
-                return d;
+            .text(function (d, i) {
+                return attr_full_name[i];
             });
     }
 
@@ -298,6 +298,12 @@
             // console.log(new_array)
         yScale = d3.scaleLinear().range([463, 0]).domain([0, max_value]);
         
+        var yAxis = d3.axisLeft().scale(yScale);
+
+        //place axis
+        var axis = d3.select(".axis")
+        .attr("transform", translate)
+        .call(yAxis);
 
         //recreate the color scale
         var colorScale = makeColorScale(csvData);
@@ -359,7 +365,7 @@
 
         
 
-        console.log(expressed)
+        // console.log(expressed)
         var full_name_display = ""
         
         switch(expressed) {
@@ -430,14 +436,16 @@
 
     //function to create dynamic label that displays on mouse hover
     function setLabel(props) {
-        console.log("here!");
+        // console.log("here!");
+
+        var country = props["NAME_EN"] ? props["NAME_EN"] : props["Country"];
         //label content
-        var labelAttribute = "<h1>" + props[expressed] + "</h1><b>" + expressed + " of " + props["NAME_EN"] + "</b>";
-        console.log(props["NAME_EN"])
+        var labelAttribute = "<h1>" + props[expressed] + "</h1><b>" + expressed + " of " + country + "</b>";
+        // console.log(props["NAME_EN"])
         
         //create info label div
         var infolabel = d3
-            .select("body")
+            .select("#demo")
             .append("div")
             .attr("class", "infolabel")
             .attr("id", props.SOV_A3 + "_label")

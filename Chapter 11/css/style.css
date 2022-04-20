@@ -1,3 +1,86 @@
+/* (A) "BORDERLESS" PAGE */
+html, body {
+    padding: 0;
+    margin: 0;
+
+  }
+  
+  /* (B) STACK DIV ON TOP OF EACH OTHER */
+  /* CREDITS: https://stackoverflow.com/questions/1909648/stacking-divs-on-top-of-each-other */
+  #demoB {
+    display: grid;
+    /* FULL PAGE COVER */
+    width: 100vw;
+    height: 100vh;
+  }
+  #demoB > * {
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+  }
+  
+  /* (C) CONTENTS ON TOP */
+  #demoBTop {
+    z-index: 2;
+    padding: 10px;
+  }
+  
+  /* (D) BACKGROUND BELOW
+  #demoBBack {
+    z-index: 1;
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/1024px-Flag_of_Europe.svg.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.1;
+    transition: opacity 3s;
+  } */
+
+ 
+
+
+
+#demo{
+    background-image: url(../data/Flag_of_Europe_transparent.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    
+}
+
+
+
+
+
+#Source {
+    font-size: 10px;
+    font-family: sans-serif;
+    position: absolute;
+    top: 60px;
+    left: 40px;
+    text-decoration: underline;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #Title {
     font-size: 118px;
   }
@@ -29,9 +112,7 @@ a:link {
     text-decoration: underline;
 
 
-  
-  /* visited link */
-  a:visited {
+a:visited {
     color: black;
   }
   
@@ -44,16 +125,6 @@ a:link {
   a:active {
     color: rgb(0, 110, 255);
   }
-
-
-
-
-
-
-
-
-
-
   }
 
 
@@ -133,7 +204,7 @@ a:link {
 
 .dropdown {
     position: absolute;
-    top: 170px; 
+    top: 30px; 
     /* top was 30 */
     left: 40px;
     z-index: 10;
