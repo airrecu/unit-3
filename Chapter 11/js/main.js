@@ -49,21 +49,21 @@
         //use Promise.all to parallelize asynchronous data loading
         var promises = [
             d3.csv("data/lab2_europe_data.csv"),
+            d3.json("data/background_map.topojson"),
             d3.json("data/europe_base.topojson"),
-            ];
+        ];
         Promise.all(promises).then(callback);
 
         function callback(data) {
             var csvData = data[0],
-                europe = data[1];
-            
-                // console.log(csvData)
-                // console.log(csvData[0]["Country"])
+                europe = data[1],
+                france = data[2];
 
             setGraticule(map, path);
 
             //translate europe TopoJSON
-	        var europeCountries = topojson.feature(europe, europe.objects.europe_base).features;
+            var europeCountries = topojson.feature(europe, europe.objects.background_map),
+                countries_with_data = topojson.feature(france, france.objects.europe_base).features;
 
             //add Europe countries to map
             var countries = map
@@ -72,11 +72,11 @@
                 .attr("class", "countries")
                 .attr("d", path);
 
-            europeCountries = joinData(europeCountries, csvData);
+            countries_with_data = joinData(countries_with_data, csvData);
 
             var colorScale = makeColorScale(csvData);
 
-            setEnumerationUnits(europeCountries,map,path,colorScale);
+            setEnumerationUnits(countries_with_data, map, path, colorScale);
 
             //add coordinated visualization to the map
             setChart(csvData, colorScale);
@@ -106,15 +106,15 @@
             .attr("d", path); //project graticule lines
     }
 
-    function joinData(europeCountries, csvData) {
+    function joinData(countries_with_data, csvData) {
         //loop through csv to assign each set of csv attribute values to geojson region
         for (var i = 0; i < csvData.length; i++) {
             var csvRegion = csvData[i]; //the current region
             var csvKey = csvRegion.SOV_A3; //the CSV primary key
 
             //loop through geojson regions to find correct region
-            for (var a = 0; a < europeCountries.length; a++) {
-                var geojsonProps = europeCountries[a].properties; //the current region geojson properties
+            for (var a = 0; a < countries_with_data.length; a++) {
+                var geojsonProps = countries_with_data[a].properties; //the current region geojson properties
                 var geojsonKey = geojsonProps.SOV_A3; //the geojson primary key
 
                 //where primary keys match, transfer csv data to geojson properties object
@@ -127,7 +127,7 @@
                 }
             }
         }
-        return europeCountries;
+        return countries_with_data;
     }
 
     function makeColorScale(data) {
