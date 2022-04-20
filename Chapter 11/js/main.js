@@ -2,6 +2,7 @@
 (function () {
     //pseudo-global variables
     var attrArray = ["GDP", "NG_Gas_Consumption", "HDD", "dependency_percent", "population"]; //list of attributes
+    var attr_full_name = ["GDP (Million Euros)", "Natural Gas Consumption (Terajoules)", "Heating Degree Days", "Energy Import Dependency (%)", "Population"]; //Full Names of attributes
     var expressed = attrArray[0]; //initial attribute
 
     //chart frame dimensions
@@ -55,7 +56,9 @@
         function callback(data) {
             var csvData = data[0],
                 europe = data[1];
-                
+            
+                // console.log(csvData)
+                // console.log(csvData[0]["Country"])
 
             setGraticule(map, path);
 
@@ -273,10 +276,27 @@
             });
     }
 
+
+
     //dropdown change listener handler
     function changeAttribute(attribute, csvData) {
         //change the expressed attribute
         expressed = attribute;
+        var new_array = []
+
+
+        csvData.forEach(function(data){
+            
+            var value = data[expressed]
+
+            if (parseFloat(value)){ 
+            new_array.push((value))
+            }})
+
+            var max_value = Math.max(...new_array)
+            // console.log(new_array)
+        yScale = d3.scaleLinear().range([463, 0]).domain([0, max_value]);
+        
 
         //recreate the color scale
         var colorScale = makeColorScale(csvData);
@@ -285,7 +305,7 @@
         var regions = d3
             .selectAll(".regions")
             .transition()
-            .duration(1000)
+            .duration(1500)
             .style("fill", function (d) {
                 var value = d.properties[expressed];
                 if (value) {
@@ -334,9 +354,45 @@
             });
 
         //at the bottom of updateChart()...add text to chart title
+
+
+        
+
+        console.log(expressed)
+        var full_name_display = ""
+        
+        switch(expressed) {
+            case "GDP":
+              // code block
+              full_name_display = attr_full_name[0]
+              break;
+            case "NG_Gas_Consumption":
+              // code block
+              full_name_display = attr_full_name[1]
+              break;
+            case "HDD":
+              // code block
+              full_name_display = attr_full_name[2]
+              break;
+            case "dependency_percent":
+               // code block
+              full_name_display = attr_full_name[3]
+              break;
+            case "population":
+               // code block
+              full_name_display = attr_full_name[4]
+              break;
+
+            default:
+              // code block
+          }
+
+
         var chartTitle = d3
             .select(".chartTitle")
-            .text("Number of Variable " + expressed[3] + " in each region");
+            .text("Annual 2019 " + full_name_display)
+            
+            ;
     }
 
     //function to highlight enumeration units and bars
@@ -371,12 +427,13 @@
         d3.select(".infolabel").remove();
     }
 
-    //function to create dynamic label
+    //function to create dynamic label that displays on mouse hover
     function setLabel(props) {
         console.log("here!");
         //label content
-        var labelAttribute = "<h1>" + props[expressed] + "</h1><b>" + expressed + "</b>";
-
+        var labelAttribute = "<h1>" + props[expressed] + "</h1><b>" + expressed + " of " + props["NAME_EN"] + "</b>";
+        console.log(props["NAME_EN"])
+        
         //create info label div
         var infolabel = d3
             .select("body")
