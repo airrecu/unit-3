@@ -50,7 +50,7 @@
         var promises = [
             d3.csv("data/lab2_europe_data.csv"),
             d3.json("data/background_map.topojson"),
-            d3.json("data/europe_base.topojson"),
+            d3.json("data/europe_with_data.topojson"),
         ];
         Promise.all(promises).then(callback);
 
@@ -63,7 +63,7 @@
 
             //translate europe TopoJSON
             var europeCountries = topojson.feature(europe, europe.objects.background_map),
-                countries_with_data = topojson.feature(france, france.objects.europe_base).features;
+                countries_with_data = topojson.feature(france, france.objects.europe_with_data).features;
 
             //add Europe countries to map
             var countries = map
