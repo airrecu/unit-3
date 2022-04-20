@@ -131,7 +131,8 @@
     }
 
     function makeColorScale(data) {
-        var colorClasses = ["#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043"];
+        // var colorClasses = ["#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043"];
+        var colorClasses = ["#fff1e5", "#ffdbba", "#ffbd81", "#ffa554", "#ff8517"];
 
         //create color scale generator
         var colorScale = d3.scaleQuantile().range(colorClasses);
@@ -260,7 +261,7 @@
             .append("option")
             .attr("class", "titleOption")
             .attr("disabled", "true")
-            .text("Select Attribute");
+            .text("Select Dataset");
 
         //add attribute name options
         var attrOptions = dropdown
